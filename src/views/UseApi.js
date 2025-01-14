@@ -29,21 +29,40 @@ export const UseApiComponent = () => {
     const { loginWithPopup, logout, user, getAccessTokenSilently, isAuthenticated } = useAuth0();
     const [endpoint, setEndpoint] = useState("");
     const [method, setMethod] = useState("GET");
-    const [headers, setHeaders] = useState([{ key: "", value: "" }]);
-    const [body, setBody] = useState({});
+    const [headers, setHeaders] = useState([{ key: "content-type", value: "application/json" }]);
+    const [body, setBody] = useState([{ key: "", value: "" }]);
     const [response, setResponse] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
-    const configs = getConfig();
+    const [error, setError] = useState(null);
 
+    const configs = getConfig();
 
     const handleAddHeader = () => {
         setHeaders([...headers, { key: "", value: "" }]);
+    };
+    const handleRemoveHeader = (index) => {
+        const updatedHeader = headers.filter((_, i) => i !== index);
+        setHeaders(updatedHeader);
+    };
+    const handleAddBody = () => {
+        setBody([...body, { key: "", value: "" }]);
+    };
+
+    const handleRemoveBody = (index) => {
+        const updatedBody = body.filter((_, i) => i !== index);
+        setBody(updatedBody);
     };
 
     const handleHeaderChange = (index, field, value) => {
         const updatedHeaders = [...headers];
         updatedHeaders[index][field] = value;
         setHeaders(updatedHeaders);
+    };
+
+    const handleBodyChange = (index, field, value) => {
+        const updatedBody = [...body];
+        updatedBody[index][field] = value;
+        setBody(updatedBody);
     };
 
     const getAccessToken = async () => {
@@ -60,6 +79,8 @@ export const UseApiComponent = () => {
     };
 
     const handleRequest = async () => {
+        setError(null); // Reset error state
+        setResponse(null); // Reset response state
         try {
             // const token = await getAccessTokenSilently();
 
@@ -69,18 +90,25 @@ export const UseApiComponent = () => {
                 return acc;
             }, {});
             formattedHeaders.Authorization = `Bearer ${accessToken}`;
-            console.log(formattedHeaders)
+
+            const formattedBody = body.reduce((acc, curr) => {
+                if (curr.key && curr.value) acc[curr.key] = curr.value;
+                return acc;
+            }, {});
+
+
+
             const config = {
                 method,
                 url: configs.audience + endpoint,
                 headers: formattedHeaders,
-                data: body,
+                data: method === "GET" || method === "DELETE" ? null : formattedBody,
             };
-
+            console.log(config)
             const res = await axios(config);
             setResponse(res.data);
         } catch (err) {
-            setResponse(err.response ? err.response.data : err.message);
+            setError(err.response ? err.response.data : err.message);
         }
     };
 
@@ -109,16 +137,16 @@ export const UseApiComponent = () => {
                                 <Row>
                                     <Col md={6}>
                                         <FormGroup>
-                                            <Label for="endpoint">エンドポイント</Label>
-                                            <Label for="endpoint">{config.audience}
-                                                <Input
-                                                    type="text"
-                                                    id="endpoint"
-                                                    value={endpoint}
-                                                    onChange={(e) => setEndpoint(e.target.value)}
-                                                    placeholder="users"
-                                                />
-                                            </Label>
+                                            <Label for="endpoint">エンドポイント：{configs.audience}</Label>
+
+                                            <Input
+                                                type="text"
+                                                id="endpoint"
+                                                value={endpoint}
+                                                onChange={(e) => setEndpoint(e.target.value)}
+                                                placeholder="users"
+                                            />
+
                                         </FormGroup>
                                     </Col>
                                     <Col md={3}>
@@ -158,6 +186,11 @@ export const UseApiComponent = () => {
                                                 onChange={(e) => handleHeaderChange(index, "value", e.target.value)}
                                             />
                                         </Col>
+                                        <Col md={2}>
+                                            <Button color="danger" onClick={() => handleRemoveHeader(index)}>
+                                                削除
+                                            </Button>
+                                        </Col>
                                     </Row>
                                 ))}
                                 <Button color="secondary" className="mt-2" onClick={handleAddHeader}>
@@ -165,14 +198,35 @@ export const UseApiComponent = () => {
                                 </Button>
 
                                 <h3 className="mt-4">リクエストボディ</h3>
-                                <FormGroup>
-                                    <Input
-                                        type="textarea"
-                                        rows="6"
-                                        value={JSON.stringify(body, null, 2)}
-                                        onChange={(e) => setBody(JSON.parse(e.target.value))}
-                                    />
-                                </FormGroup>
+                                {body.map((item, index) => (
+                                    <Row key={index} className="align-items-center">
+                                        <Col md={5}>
+                                            <Input
+                                                type="text"
+                                                placeholder="Key"
+                                                value={item.key}
+                                                onChange={(e) => handleBodyChange(index, "key", e.target.value)}
+                                            />
+                                        </Col>
+                                        <Col md={5}>
+                                            <Input
+                                                type="text"
+                                                placeholder="Value"
+                                                value={item.value}
+                                                onChange={(e) => handleBodyChange(index, "value", e.target.value)}
+                                            />
+                                        </Col>
+                                        <Col md={2}>
+                                            <Button color="danger" onClick={() => handleRemoveBody(index)}>
+                                                削除
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                ))}
+                                <Button color="secondary" className="mt-2" onClick={handleAddBody}>
+                                    ボディを追加
+                                </Button>
+                                <h3 className="mt-4">送信</h3>
                                 <Button color="primary" onClick={handleRequest}>
                                     送信
                                 </Button>
@@ -183,15 +237,13 @@ export const UseApiComponent = () => {
                 {response && (
                     <CardFooter>
                         <h3>レスポンス</h3>
-                        <Table striped>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <pre>{JSON.stringify(response, null, 2)}</pre>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </Table>
+                        <pre>{JSON.stringify(response, null, 2)}</pre>
+                    </CardFooter>
+                )}
+                {error && (
+                    <CardFooter>
+                        <h3>エラー</h3>
+                        <pre>{JSON.stringify(error, null, 2)}</pre>
                     </CardFooter>
                 )}
             </Card>
