@@ -1,208 +1,204 @@
 import React from "react";
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { Container, Row, Col } from "reactstrap";
+import {
+    Container,
+    Button,
+    Form,
+    FormGroup,
+    Label,
+    Input,
+    Row,
+    Col,
+    Card,
+    CardBody,
+    CardHeader,
+    CardFooter,
+    Table,
+} from "reactstrap";
 import Highlight from "../components/Highlight";
 import Loading from "../components/Loading";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 // import { Auth0Client } from "@auth0/auth0-spa-js";
 import { getConfig } from "../config";
 import { jwtDecode } from 'jwt-decode';
+import { config } from "@fortawesome/fontawesome-svg-core";
 
 export const UseApiComponent = () => {
     let auth0 = null;
-
-    const {
-        getIdTokenClaims,
-        loginWithPopup,
-        getAccessTokenSilently,
-        user,
-        logout,
-    } = useAuth0();
-
-    const config = getConfig();
-    const [token, setToken] = useState("")
-    const [idToken, setIdToken] = useState(null);
-    const [decodedIdToken, setDecodedIdToken] = useState(null);
+    const { loginWithPopup, logout, user, getAccessTokenSilently, isAuthenticated } = useAuth0();
+    const [endpoint, setEndpoint] = useState("");
+    const [method, setMethod] = useState("GET");
+    const [headers, setHeaders] = useState([{ key: "", value: "" }]);
+    const [body, setBody] = useState({});
+    const [response, setResponse] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
-    const [decodedAccessToken, setDecodedAccessToken] = useState(null);
+    const configs = getConfig();
 
-    const logoutWithRedirect = () =>
-        logout({
-            logoutParams: {
-                returnTo: window.location.origin,
-            }
-        });
 
-    const getToken = (async () => {
-        const idToken = await getIdTokenClaims({
-            // audience: 'https://dev-tohogas-auth.jp.auth0.com/api/v2/' // ここにAPIの識別子を指定
-        });
-        console.log("IDトークンを発行します")
-        console.log(idToken.__raw)
-        setIdToken(idToken.__raw)
-        const decoded = jwtDecode(idToken.__raw);
-        setDecodedIdToken(decoded)
-    })
+    const handleAddHeader = () => {
+        setHeaders([...headers, { key: "", value: "" }]);
+    };
+
+    const handleHeaderChange = (index, field, value) => {
+        const updatedHeaders = [...headers];
+        updatedHeaders[index][field] = value;
+        setHeaders(updatedHeaders);
+    };
 
     const getAccessToken = async () => {
-        const token = await getAccessTokenSilently()
-        console.log("アクセストークンを発行します")
-        console.log(config.accessTokenUrl)
+
         await axios.get(
-            config.accessTokenUrl
+            configs.accessTokenUrl
         ).then(response => {
-            console.log("アクセストークンをデコードします")
-            console.log(response.data.access_token)
+
             setAccessToken(response.data.access_token)
-            const decoded = jwtDecode(response.data.access_token);
-            setDecodedAccessToken(decoded);
-            console.log(decoded)
+
         })
             .catch(error => console.log('error', error));
 
     };
 
-    // const getMaster = async () => {
-    //   const token = await getAccessTokenSilently()
-    //   console.log(token)
-    //   await axios.post(
-    //     "https://mdwlvhtcdk.execute-api.ap-northeast-1.amazonaws.com/resendVerificationEmail",
-    //     {
-
-    //     },
-    //     { headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } }
-    //   ).then(response => {
-    //     console.log(response.data)
-
-    //   })
-    //     .catch(error => console.log('error', error));
+    const handleRequest = async () => {
+        try {
+            // const token = await getAccessTokenSilently();
 
 
-    // };
+            const formattedHeaders = headers.reduce((acc, curr) => {
+                if (curr.key && curr.value) acc[curr.key] = curr.value;
+                return acc;
+            }, {});
+            formattedHeaders.Authorization = `Bearer ${accessToken}`;
+            console.log(formattedHeaders)
+            const config = {
+                method,
+                url: configs.audience + endpoint,
+                headers: formattedHeaders,
+                data: body,
+            };
 
-
-    // const authenticateUser = async () => {
-    //   const a0 = new Auth0Client({
-    //     domain: config.domain,
-    //     clientId: config.clientId,
-    //   });
-    //   await a0.loginWithPopup({
-    //     max_age: 0,
-    //     scope: "openid",
-    //   });
-    //   return await a0.getIdTokenClaims();
-    // };
-
-    // const linkAccounts = async () => {
-
-    //   //    const accessToken = await auth0.getTokenSilently();
-
-    //   const {
-    //     __raw: targetUserIdToken,
-    //     email_verified,
-    //     email,
-    //   } = await authenticateUser();
-
-    //   const token = await getAccessTokenSilently()
-    //   setAccessToken(token)
-    //   setAccessToken(targetUserIdToken)
-
-    //   await loginWithPopup({
-    //     prompt: 'login', // 常にログインを促す
-    //     max_age: 0,
-    //     connection: 'google-oauth2'
-    //   });
-
-
-    //   const tokenClaims = await getIdTokenClaims();
-    //   const idToken = tokenClaims.__raw; // IDトークン本体は `__raw` に格納されている
-    //   setIdToken(idToken);
-
-    //   const user_id_child = "google-oauth2|106105577515094295701"
-    //   const response = await fetch(`https://mdwlvhtcdk.execute-api.ap-northeast-1.amazonaws.com/linkSocial`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //     body: JSON.stringify({
-    //       link_with: idToken,
-    //       user_id_child: user_id_child,
-    //       provider: 'google-oauth2',
-    //     }),
-    //   });
-
-    //   if (response.ok) {
-    //     console.log('アカウントがリンクされました');
-    //   } else {
-    //     console.error('アカウントのリンクに失敗しました');
-    //   }
-    // };
-
+            const res = await axios(config);
+            setResponse(res.data);
+        } catch (err) {
+            setResponse(err.response ? err.response.data : err.message);
+        }
+    };
 
 
     useEffect(() => {
-        getToken();
         getAccessToken();
     }, []);
 
     return (
-        <Container className="mb-5">
-            <h1>プロフィール画面</h1>
-            <br />
-            <Row className="align-items-center profile-header mb-5 text-center text-md-left">
-                <Col md={2}>
-                    <img
-                        src={user.picture}
-                        alt="Profile"
-                        className="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
-                    />
-                </Col>
-                <Col md>
-                    <h2>{user.name}</h2>
-                    <p className="lead text-muted">{user.email}</p>
-                </Col>
-                {user.sub.match("auth0|.*") &&
-                    <>
-                        {/* <button onClick={() => IPfilter()}>IP制限</button> */}
-                        {/* / <button onClick={() => handleLinkAccount()}>Google連携</button> */}
-                        {/* <button onClick={() => changePassword()}>パスワード変更</button> */}
-                        <button onClick={() => getToken()}>IDトークン</button>
-                        <button onClick={() => getAccessToken(user.sub)}>アクセストークン</button>
-                        {/* <button onClick={() => getMaster()}>検証用メール再送信</button> */}
-                        {/* <button onClick={() => linkAccounts()}>ソーシャルアカウントの連携</button> */}
-                    </>
-                }
+        <Container className="mt-4">
+            <Card>
+                <CardHeader>
+                    <h1 className="text-center">Auth0 Management API Tester</h1>
+                </CardHeader>
+                <CardBody>
+                    {!isAuthenticated ? (
+                        <div className="text-center">
+                            <Button color="primary" onClick={() => loginWithPopup()}>
+                                Login
+                            </Button>
+                        </div>
+                    ) : (
+                        <>
 
-            </Row>
-            <Row>
-                <h2>API検証</h2>
-                <Highlight>{JSON.stringify(user, null, 2)}</Highlight>
-                {/* {idToken &&
+                            <Form>
+                                <Row>
+                                    <Col md={6}>
+                                        <FormGroup>
+                                            <Label for="endpoint">エンドポイント</Label>
+                                            <Label for="endpoint">{config.audience}
+                                                <Input
+                                                    type="text"
+                                                    id="endpoint"
+                                                    value={endpoint}
+                                                    onChange={(e) => setEndpoint(e.target.value)}
+                                                    placeholder="users"
+                                                />
+                                            </Label>
+                                        </FormGroup>
+                                    </Col>
+                                    <Col md={3}>
+                                        <FormGroup>
+                                            <Label for="method">メソッド</Label>
+                                            <Input
+                                                type="select"
+                                                id="method"
+                                                value={method}
+                                                onChange={(e) => setMethod(e.target.value)}
+                                            >
+                                                <option value="GET">GET</option>
+                                                <option value="POST">POST</option>
+                                                <option value="PATCH">PATCH</option>
+                                                <option value="DELETE">DELETE</option>
+                                            </Input>
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
 
-                    <>
-                        <h2>IDトークン</h2>
-                        <Highlight>{idToken}</Highlight>
-                        <h2>デコード結果</h2>
-                        <Highlight>{JSON.stringify(decodedIdToken, null, 2)}</Highlight>
-                    </>
+                                <h3>ヘッダー</h3>
+                                {headers.map((header, index) => (
+                                    <Row key={index} className="align-items-center">
+                                        <Col md={5}>
+                                            <Input
+                                                type="text"
+                                                placeholder="Key"
+                                                value={header.key}
+                                                onChange={(e) => handleHeaderChange(index, "key", e.target.value)}
+                                            />
+                                        </Col>
+                                        <Col md={5}>
+                                            <Input
+                                                type="text"
+                                                placeholder="Value"
+                                                value={header.value}
+                                                onChange={(e) => handleHeaderChange(index, "value", e.target.value)}
+                                            />
+                                        </Col>
+                                    </Row>
+                                ))}
+                                <Button color="secondary" className="mt-2" onClick={handleAddHeader}>
+                                    ヘッダーを追加
+                                </Button>
 
-                }
-                {accessToken &&
-
-                    <>
-                        <h2>アクセストークン</h2>
-                        <Highlight>{accessToken}</Highlight>
-                        <h2>デコード結果</h2>
-                        <Highlight>{JSON.stringify(decodedAccessToken, null, 2)}</Highlight>
-                    </>
-
-                } */}
-            </Row>
+                                <h3 className="mt-4">リクエストボディ</h3>
+                                <FormGroup>
+                                    <Input
+                                        type="textarea"
+                                        rows="6"
+                                        value={JSON.stringify(body, null, 2)}
+                                        onChange={(e) => setBody(JSON.parse(e.target.value))}
+                                    />
+                                </FormGroup>
+                                <Button color="primary" onClick={handleRequest}>
+                                    送信
+                                </Button>
+                            </Form>
+                        </>
+                    )}
+                </CardBody>
+                {response && (
+                    <CardFooter>
+                        <h3>レスポンス</h3>
+                        <Table striped>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <pre>{JSON.stringify(response, null, 2)}</pre>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </CardFooter>
+                )}
+            </Card>
         </Container>
     );
 };
+
 
 export default withAuthenticationRequired(UseApiComponent, {
     onRedirecting: () => <Loading />,
