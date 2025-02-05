@@ -177,29 +177,70 @@ export const ProfileComponent = () => {
 
       </Row>
       <Row>
-        <h2>Auth0ライブラリのuser情報</h2>
-        <Highlight>{JSON.stringify(user, null, 2)}</Highlight>
-        {idToken &&
+        <Col md={6}>
+          <h2>Auth0ライブラリのuser情報</h2>
+          <Highlight>{JSON.stringify(user, null, 2)}</Highlight>
+        </Col>
 
-          <>
+        <Col md={6}>
+          <Highlight>
+            <Row className="py-2 border-bottom">
+              <Col md={3} className="fw-bold">nickname</Col>
+              <Col md={9}>ニックネーム</Col>
+            </Row>
+            <Row className="py-2 border-bottom">
+              <Col md={3} className="fw-bold">name</Col>
+              <Col md={9}>なまえ</Col>
+            </Row>
+            <Row className="py-2 border-bottom">
+              <Col md={3} className="fw-bold">picture</Col>
+              <Col md={9}>写真</Col>
+            </Row>
+            <Row className="py-2 border-bottom">
+              <Col md={3} className="fw-bold">updated_at</Col>
+              <Col md={9}>更新日時</Col>
+            </Row>
+            <Row className="py-2 border-bottom">
+              <Col md={3} className="fw-bold">email</Col>
+              <Col md={9}>メールアドレス</Col>
+            </Row>
+            <Row className="py-2 border-bottom">
+              <Col md={3} className="fw-bold">email_verified</Col>
+              <Col md={9}>メール認証 true false</Col>
+            </Row>
+            <Row className="py-2 border-bottom">
+              <Col md={3} className="fw-bold">sub</Col>
+              <Col md={9}>sub??</Col>
+            </Row>
+          </Highlight>
+        </Col>
+      </Row>
+
+      {idToken &&
+        <Row>
+          <Col md={6}>
             <h2>IDトークン</h2>
             <Highlight>{idToken}</Highlight>
             <h2>デコード結果</h2>
             <Highlight>{JSON.stringify(decodedIdToken, null, 2)}</Highlight>
-          </>
+          </Col>
+        </Row>
 
-        }
-        {accessToken &&
 
-          <>
+
+
+      }
+      {accessToken &&
+        <Row>
+          <Col md={6}>
             <h2>アクセストークン</h2>
             <Highlight>{accessToken}</Highlight>
             <h2>デコード結果</h2>
             <Highlight>{JSON.stringify(decodedAccessToken, null, 2)}</Highlight>
-          </>
+          </Col>
+        </Row>
+      }
 
-        }
-      </Row>
     </Container>
   );
 };
