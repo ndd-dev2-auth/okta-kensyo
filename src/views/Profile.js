@@ -1,7 +1,7 @@
 import React from "react";
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Collapse, Button, CardBody, CardHeader, CardTitle, CardText, Card, } from "reactstrap";
 import Highlight from "../components/Highlight";
 import Loading from "../components/Loading";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
@@ -26,7 +26,13 @@ export const ProfileComponent = () => {
   const [decodedIdToken, setDecodedIdToken] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
   const [decodedAccessToken, setDecodedAccessToken] = useState(null);
+  const [isIdTokenOpen, setIsIdTokenOpen] = useState(true);
+  const [isAccessTokenOpen, setIsAccessTokenOpen] = useState(true);
+  const [isUsersOpen, setIsUsersOpen] = useState(true);
 
+  const toggleUsers = () => setIsUsersOpen(!isUsersOpen);
+  const toggleIdToken = () => setIsIdTokenOpen(!isIdTokenOpen);
+  const toggleAccessToken = () => setIsAccessTokenOpen(!isAccessTokenOpen);
   const logoutWithRedirect = () =>
     logout({
       logoutParams: {
@@ -151,33 +157,9 @@ export const ProfileComponent = () => {
     <Container className="mb-5">
       <h1>プロフィール画面</h1>
       <br />
-      <Row className="align-items-center profile-header mb-5 text-center text-md-left">
-        <Col md={2}>
-          <img
-            src={user.picture}
-            alt="Profile"
-            className="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
-          />
-        </Col>
-        <Col md>
-          <h2>{user.name}</h2>
-          <p className="lead text-muted">{user.email}</p>
-        </Col>
-        {user.sub.match("auth0|.*") &&
-          <>
-            {/* <button onClick={() => IPfilter()}>IP制限</button> */}
-            {/* / <button onClick={() => handleLinkAccount()}>Google連携</button> */}
-            {/* <button onClick={() => changePassword()}>パスワード変更</button> */}
-            <button onClick={() => getToken()}>IDトークン</button>
-            <button onClick={() => getAccessToken(user.sub)}>アクセストークン</button>
-            {/* <button onClick={() => getMaster()}>検証用メール再送信</button> */}
-            {/* <button onClick={() => linkAccounts()}>ソーシャルアカウントの連携</button> */}
-          </>
-        }
-
-      </Row>
+      <Collapse isOpen={isUsersOpen}>
       <Row>
-
+     
         <Col md={6}>
           <h2>Auth0ライブラリのuser情報</h2>
           <Highlight>{JSON.stringify(user, null, 2)}</Highlight>
@@ -232,35 +214,41 @@ export const ProfileComponent = () => {
           </Highlight>
         </Col>
       </Row>
+      </Collapse>
 
-
-
+      <Button color="info" onClick={toggleUsers} style={{ marginBottom: '1rem' }}>
+      Auth0ライブラリのuser情報を{isUsersOpen?"閉じる":"開く"}
+      </Button>
+      
+      <br/>
+      <Collapse isOpen={isIdTokenOpen}>
       <Row>
-        <Col md={6}>
-          <h2>IDトークン</h2>
+        <Col md={12}>
+          <h1>IDトークン</h1>
+          
           <Highlight>{idToken}</Highlight>
-          <h2>デコード結果</h2>
+        </Col>
+        <Col md={6}>
+          <h2>IDトークンのデコード結果内容
+          </h2>
           <Highlight>{JSON.stringify(decodedIdToken, null, 2)}</Highlight>
         </Col>
 
         <Col md={6}>
-          <h2>IDトークンとは</h2>
-          <Highlight>
-            <Col md={9} style={{ color: '#e6db74' }}>あああああああああああああああああああああああああああああああああああああああああ</Col>
-          </Highlight>
+       
           <h2>キーの説明</h2>
           <Highlight>
             <Row className="">
               <Col md={12} className="fw-bold">{'{'}</Col>
             </Row>
-            {/* <Row className="">
+            <Row className="">
               <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>given_name</Col>
               <Col md={9} style={{ color: '#e6db74' }}>名</Col>
             </Row>
             <Row className="">
               <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>family_name</Col>
               <Col md={9} style={{ color: '#e6db74' }}>姓</Col>
-            </Row> */}
+            </Row>
             <Row className="">
               <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>nickname</Col>
               <Col md={9} style={{ color: '#e6db74' }}>ニックネーム</Col>
@@ -319,24 +307,29 @@ export const ProfileComponent = () => {
           </Highlight>
         </Col>
       </Row>
+      </Collapse>
+
+      <Button color="warning" onClick={toggleIdToken} style={{ marginBottom: '1rem' }}>
+        IDトークンの情報を{isIdTokenOpen?"閉じる":"開く"}
+      </Button>
 
 
+      <br/>
 
 
-
-
+      <Collapse isOpen={isAccessTokenOpen}>
       <Row>
-        <Col md={6}>
-          <h2>アクセストークン</h2>
+        <Col md={12}>
+          <h1>アクセストークン</h1>
           <Highlight>{accessToken}</Highlight>
-          <h2>デコード結果</h2>
+        </Col>
+
+       
+        <Col md={6}>
+          <h2>アクセストークンのデコード結果</h2>
           <Highlight>{JSON.stringify(decodedAccessToken, null, 2)}</Highlight>
         </Col>
         <Col md={6}>
-          <h2>アクセストークンとは</h2>
-          <Highlight>
-            <Col md={9} style={{ color: '#e6db74' }}>あああああああああああああああああああああああああああああああああああああああああ</Col>
-          </Highlight>
           <h2>キーの説明</h2>
           <Highlight>
             <Row className="">
@@ -388,7 +381,34 @@ export const ProfileComponent = () => {
             </Row>
           </Highlight>
         </Col>
+     
+      <Col md={12}>
+          <h2>アクセストークンとは？</h2>
+          <Highlight>
+          アクセストークンとは、認可に使うための情報がjwt形式で詰まっているもの。<br/>
+          クライアント(PC)からサーバのAPIやサービス(Google Drive等のサービス)に対して、登録・変更・削除をするためのチケットのようなもの。<br/>
+          アクセストークンには次の情報が紐付いている<br/>
+            • どのリソースへ操作を行うことが許可されているか(audクレーム)<br/>
+            • どのような操作が許可されているか？(create?update?delete?)(scopeクレーム)<br/>
+            • 有効期限はいつまでか(expクレーム)<br/>
+            • 発行者(issクレーム)<br/>
+            • 発行時間(iatクレーム)<br/>
+          アクセストークンを用いてAPIアクセスするさいは、HTTP ヘッダーに下記の指定が必要<br/>
+          Authorization : Bearer [アクセストークン]<br/>
+          アクセストークンは不正に取得されると、同じ操作対象・権限でアクセスできてしまうので、有効期限や権限スコープを適切に設定することが重要です。
+
+
+          
+
+          </Highlight>
+      </Col>
       </Row>
+      </Collapse>
+    
+      <Button  color="danger" onClick={toggleAccessToken} style={{ marginBottom: '1rem' }}>
+        アクセストークンの情報を{isAccessTokenOpen?"閉じる":"開く"}
+      </Button>
+ 
     </Container>
   );
 };
