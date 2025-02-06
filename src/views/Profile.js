@@ -177,70 +177,218 @@ export const ProfileComponent = () => {
 
       </Row>
       <Row>
+
         <Col md={6}>
           <h2>Auth0ライブラリのuser情報</h2>
           <Highlight>{JSON.stringify(user, null, 2)}</Highlight>
         </Col>
 
         <Col md={6}>
+          <h2>キーの説明</h2>
           <Highlight>
-            <Row className="py-2 border-bottom">
-              <Col md={3} className="fw-bold">nickname</Col>
-              <Col md={9}>ニックネーム</Col>
+            <Row className="">
+              <Col md={12} className="fw-bold">{'{'}</Col>
             </Row>
-            <Row className="py-2 border-bottom">
-              <Col md={3} className="fw-bold">name</Col>
-              <Col md={9}>なまえ</Col>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>given_name</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>名</Col>
             </Row>
-            <Row className="py-2 border-bottom">
-              <Col md={3} className="fw-bold">picture</Col>
-              <Col md={9}>写真</Col>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>family_name</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>姓</Col>
             </Row>
-            <Row className="py-2 border-bottom">
-              <Col md={3} className="fw-bold">updated_at</Col>
-              <Col md={9}>更新日時</Col>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>nickname</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>ニックネーム</Col>
             </Row>
-            <Row className="py-2 border-bottom">
-              <Col md={3} className="fw-bold">email</Col>
-              <Col md={9}>メールアドレス</Col>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>name</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>なまえ</Col>
             </Row>
-            <Row className="py-2 border-bottom">
-              <Col md={3} className="fw-bold">email_verified</Col>
-              <Col md={9}>メール認証 true false</Col>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>picture</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>写真</Col>
             </Row>
-            <Row className="py-2 border-bottom">
-              <Col md={3} className="fw-bold">sub</Col>
-              <Col md={9}>sub??</Col>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>updated_at</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>更新日時</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>email</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>メールアドレス</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>email_verified</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>メール認証 true false</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>sub</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>ID トークン発行者のシステム内において、ユーザーを一意に特定することが可能な識別子</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold">{'}'}</Col>
+              <Col md={9} style={{ color: '#e6db74' }}> </Col>
             </Row>
           </Highlight>
         </Col>
       </Row>
 
-      {idToken &&
-        <Row>
-          <Col md={6}>
-            <h2>IDトークン</h2>
-            <Highlight>{idToken}</Highlight>
-            <h2>デコード結果</h2>
-            <Highlight>{JSON.stringify(decodedIdToken, null, 2)}</Highlight>
-          </Col>
-        </Row>
+
+
+      <Row>
+        <Col md={6}>
+          <h2>IDトークン</h2>
+          <Highlight>{idToken}</Highlight>
+          <h2>デコード結果</h2>
+          <Highlight>{JSON.stringify(decodedIdToken, null, 2)}</Highlight>
+        </Col>
+
+        <Col md={6}>
+          <h2>IDトークンとは</h2>
+          <Highlight>
+            <Col md={9} style={{ color: '#e6db74' }}>あああああああああああああああああああああああああああああああああああああああああ</Col>
+          </Highlight>
+          <h2>キーの説明</h2>
+          <Highlight>
+            <Row className="">
+              <Col md={12} className="fw-bold">{'{'}</Col>
+            </Row>
+            {/* <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>given_name</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>名</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>family_name</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>姓</Col>
+            </Row> */}
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>nickname</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>ニックネーム</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>name</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>なまえ</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>picture</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>写真</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>updated_at</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>更新日時</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>email</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>メールアドレス</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>email_verified</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>メール認証 true false</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>iss</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>iss!</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>aud</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>aud!</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>iat</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>iat!</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>exp</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>exp!</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>sub</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>sub!</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>sid</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>sid!</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>nonce</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>nonce!</Col>
+            </Row>
+            <Row className="">
+              <Col md={12} className="fw-bold">{'}'}</Col>
+            </Row>
+          </Highlight>
+        </Col>
+      </Row>
 
 
 
 
-      }
-      {accessToken &&
-        <Row>
-          <Col md={6}>
-            <h2>アクセストークン</h2>
-            <Highlight>{accessToken}</Highlight>
-            <h2>デコード結果</h2>
-            <Highlight>{JSON.stringify(decodedAccessToken, null, 2)}</Highlight>
-          </Col>
-        </Row>
-      }
 
+
+      <Row>
+        <Col md={6}>
+          <h2>アクセストークン</h2>
+          <Highlight>{accessToken}</Highlight>
+          <h2>デコード結果</h2>
+          <Highlight>{JSON.stringify(decodedAccessToken, null, 2)}</Highlight>
+        </Col>
+        <Col md={6}>
+          <h2>アクセストークンとは</h2>
+          <Highlight>
+            <Col md={9} style={{ color: '#e6db74' }}>あああああああああああああああああああああああああああああああああああああああああ</Col>
+          </Highlight>
+          <h2>キーの説明</h2>
+          <Highlight>
+            <Row className="">
+              <Col md={12} className="fw-bold">{'{'}</Col>
+            </Row>
+            {/* <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>given_name</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>名</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>family_name</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>姓</Col>
+            </Row> */}
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>iss</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>iss!</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>sub</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>sub!</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>aud</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>aud!</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>iat</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>iat!</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>exp</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>exp!</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>scope</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>scope!</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>gty</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>gty!</Col>
+            </Row>
+            <Row className="">
+              <Col md={3} className="fw-bold" style={{ color: '#f92672' }}>azp</Col>
+              <Col md={9} style={{ color: '#e6db74' }}>azp!</Col>
+            </Row>
+            
+            <Row className="">
+              <Col md={12} className="fw-bold">{'}'}</Col>
+            </Row>
+          </Highlight>
+        </Col>
+      </Row>
     </Container>
   );
 };

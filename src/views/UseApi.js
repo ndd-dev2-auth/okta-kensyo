@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import {
     Container,
+    Collapse,
     Button,
     Form,
     FormGroup,
@@ -34,6 +35,13 @@ export const UseApiComponent = () => {
     const [response, setResponse] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
     const [error, setError] = useState(null);
+
+
+    const [isApi1Open, setIsApi1Open] = useState(false);
+    const [isApi2Open, setIsApi2Open] = useState(false);
+    const [isApi3Open, setIsApi3Open] = useState(false);
+
+
 
     const configs = getConfig();
 
@@ -119,6 +127,48 @@ export const UseApiComponent = () => {
 
     return (
         <Container className="mt-4">
+
+            <div>
+                {/* API1 Button and Accordion */}
+                <Button color="primary" onClick={() => setIsApi1Open(!isApi1Open)} block>
+                    API1
+                </Button>
+                <Collapse isOpen={isApi1Open}>
+                    <Card>
+                        <CardBody>
+                            {/* API1 Content */}
+                            <p>API1の情報をここに表示</p>
+                        </CardBody>
+                    </Card>
+                </Collapse>
+
+                {/* API2 Button and Accordion */}
+                <Button color="primary" onClick={() => setIsApi2Open(!isApi2Open)} block>
+                    API2
+                </Button>
+                <Collapse isOpen={isApi2Open}>
+                    <Card>
+                        <CardBody>
+                            {/* API2 Content */}
+                            <p>API2の情報をここに表示</p>
+                        </CardBody>
+                    </Card>
+                </Collapse>
+
+                {/* API3 Button and Accordion */}
+                <Button color="primary" onClick={() => setIsApi3Open(!isApi3Open)} block>
+                    API3
+                </Button>
+                <Collapse isOpen={isApi3Open}>
+                    <Card>
+                        <CardBody>
+                            {/* API3 Content */}
+                            <p>API3の情報をここに表示</p>
+                        </CardBody>
+                    </Card>
+                </Collapse>
+            </div>
+
             <Card>
                 <CardHeader>
                     <h1 className="text-center">Auth0 Management API Tester</h1>
