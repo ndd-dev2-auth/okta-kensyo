@@ -28,6 +28,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 export const UseApiComponent = () => {
     let auth0 = null;
     const { loginWithPopup, logout, user, getAccessTokenSilently, isAuthenticated } = useAuth0();
+    const [apiType, setApiType] = useState("");
     const [endpoint, setEndpoint] = useState("");
     const [method, setMethod] = useState("GET");
     const [headers, setHeaders] = useState([{ key: "content-type", value: "application/json" }]);
@@ -36,14 +37,67 @@ export const UseApiComponent = () => {
     const [accessToken, setAccessToken] = useState(null);
     const [error, setError] = useState(null);
 
-
-    const [isApi1Open, setIsApi1Open] = useState(false);
-    const [isApi2Open, setIsApi2Open] = useState(false);
-    const [isApi3Open, setIsApi3Open] = useState(false);
-
-
-
     const configs = getConfig();
+
+    const handleApiTypeChange = (e) => {
+        const selectedApiType = e.target.value;
+        setApiType(selectedApiType);
+
+        const updatedConfig = {
+            method: "",
+            endpoint: "",
+            headers: [],
+            body: [],
+        };
+
+        switch (selectedApiType) {
+            case "getUsers":
+                updatedConfig.method = "GET";
+                updatedConfig.endpoint = "users/[特定のユーザーを取得したい場合user_IDを記述]";
+                updatedConfig.headers = [{ key: "content-type", value: "application/json" }];
+                updatedConfig.body = [];
+                break;
+
+            case "updateUser":
+                updatedConfig.method = "PATCH";
+                updatedConfig.endpoint = "users/[処理対象ユーザーID]";
+                updatedConfig.headers = [
+                    { key: "Content-Type", value: "application/json" },
+                ];
+                updatedConfig.body = [
+                    { key: "app_metadata.appName1.role", value: "admin" },
+                    { key: "app_metadata.appName1.permissions", value: ["read", "write", "delete"] },
+                    { key: "app_metadata.appName2.flag", value: "true" },
+                ];
+                break;
+
+            case "createUser":
+                updatedConfig.method = "POST";
+                updatedConfig.endpoint = "users";
+                updatedConfig.headers = [
+                    { key: "Content-Type", value: "application/json" },
+                ];
+                updatedConfig.body = [
+                    { key: "email", value: "newuser@example.com" },
+                    { key: "connection", value: "Username-Password-Authentication" },
+                    { key: "password", value: "SecurePassword123" },
+                    { key: "given_name", value: "テスト" },
+                    { key: "family_name", value: "テスト" },
+                    { key: "name", value: "テストユーザー" }
+                ];
+
+                break;
+            // 他のAPIタイプに応じて設定を追加
+            default:
+                break;
+        }
+
+        setMethod(updatedConfig.method);
+        setEndpoint(updatedConfig.endpoint);
+        setHeaders(updatedConfig.headers);
+        setBody(updatedConfig.body);
+    };
+
 
     const handleAddHeader = () => {
         setHeaders([...headers, { key: "", value: "" }]);
@@ -99,8 +153,29 @@ export const UseApiComponent = () => {
             }, {});
             formattedHeaders.Authorization = `Bearer ${accessToken}`;
 
+            // // profile.emailの送り方に対応できていない?
+            // const formattedBody = body.reduce((acc, curr) => {
+            //     if (curr.key && curr.value) acc[curr.key] = curr.value;
+            //     return acc;
+            // }, {});
+
+            const setNestedValue = (obj, path, value) => {
+                const keys = path.split('.');
+                let current = obj;
+
+                keys.slice(0, -1).forEach(key => {
+                    current[key] = current[key] || {};
+                    current = current[key];
+                });
+
+                current[keys[keys.length - 1]] = value;
+            };
+
+            // リクエストボディの処理
             const formattedBody = body.reduce((acc, curr) => {
-                if (curr.key && curr.value) acc[curr.key] = curr.value;
+                if (curr.key && curr.value) {
+                    setNestedValue(acc, curr.key, curr.value);
+                }
                 return acc;
             }, {});
 
@@ -127,48 +202,6 @@ export const UseApiComponent = () => {
 
     return (
         <Container className="mt-4">
-
-            <div>
-                {/* API1 Button and Accordion */}
-                <Button color="primary" onClick={() => setIsApi1Open(!isApi1Open)} block>
-                    API1
-                </Button>
-                <Collapse isOpen={isApi1Open}>
-                    <Card>
-                        <CardBody>
-                            {/* API1 Content */}
-                            <p>API1の情報をここに表示</p>
-                        </CardBody>
-                    </Card>
-                </Collapse>
-
-                {/* API2 Button and Accordion */}
-                <Button color="primary" onClick={() => setIsApi2Open(!isApi2Open)} block>
-                    API2
-                </Button>
-                <Collapse isOpen={isApi2Open}>
-                    <Card>
-                        <CardBody>
-                            {/* API2 Content */}
-                            <p>API2の情報をここに表示</p>
-                        </CardBody>
-                    </Card>
-                </Collapse>
-
-                {/* API3 Button and Accordion */}
-                <Button color="primary" onClick={() => setIsApi3Open(!isApi3Open)} block>
-                    API3
-                </Button>
-                <Collapse isOpen={isApi3Open}>
-                    <Card>
-                        <CardBody>
-                            {/* API3 Content */}
-                            <p>API3の情報をここに表示</p>
-                        </CardBody>
-                    </Card>
-                </Collapse>
-            </div>
-
             <Card>
                 <CardHeader>
                     <h1 className="text-center">Auth0 Management API Tester</h1>
@@ -212,6 +245,24 @@ export const UseApiComponent = () => {
                                                 <option value="POST">POST</option>
                                                 <option value="PATCH">PATCH</option>
                                                 <option value="DELETE">DELETE</option>
+                                            </Input>
+                                        </FormGroup>
+                                    </Col>
+
+                                    <Col md={3}>
+                                        <FormGroup>
+                                            <Label for="apiType">試行するAPIを選択</Label>
+                                            <Input
+                                                type="select"
+                                                id="apiType"
+                                                value={apiType}
+                                                onChange={handleApiTypeChange}
+                                            >
+                                                <option value="getUsers">ユーザー取得</option>
+                                                <option value="updateUser">ユーザー更新</option>
+                                                <option value="createUser">ユーザー作成</option>
+                                                <option value="deleteUser">ユーザー削除</option>
+                                                /* 他のAPIタイプも追加 */
                                             </Input>
                                         </FormGroup>
                                     </Col>
