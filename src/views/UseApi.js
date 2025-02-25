@@ -24,6 +24,7 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { getConfig } from "../config";
 import { jwtDecode } from 'jwt-decode';
 import { config } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const UseApiComponent = () => {
     let auth0 = null;
@@ -258,6 +259,7 @@ export const UseApiComponent = () => {
                                                 value={apiType}
                                                 onChange={handleApiTypeChange}
                                             >
+                                                <option value="">APIを選択してください</option>
                                                 <option value="getUsers">ユーザー取得</option>
                                                 <option value="updateUser">ユーザー更新</option>
                                                 <option value="createUser">ユーザー作成</option>
@@ -348,6 +350,26 @@ export const UseApiComponent = () => {
                     </CardFooter>
                 )}
             </Card>
+
+      <br />
+      参考ページ
+      <br />
+      <a href="https://dev.classmethod.jp/articles/auth0-access-token-id-token-difference/">
+        <FontAwesomeIcon icon="link" className="mr-2" />
+        APIに関する参考ページ
+      </a>
+      <br />
+
+      <a href="https://tech.yyh-gl.dev/blog/id_token_and_access_token/">
+        <FontAwesomeIcon icon="link" className="mr-2" />
+        APIに関する参考ページ
+      </a>
+      <br />
+      <a href="https://developer.okta.com/docs/guides/build-self-signed-jwt/java/main/">
+        <FontAwesomeIcon icon="link" className="mr-2" />
+        APIに関する参考ページ
+      </a>
+
         </Container>
     );
 };

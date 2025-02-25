@@ -301,7 +301,7 @@ export const ProfileComponent = () => {
               <Row className="">
                 <Col md={4} className="fw-bold" style={{ color: '#f92672' }}>acr<span style={{ fontSize: '0.5em' }}>(Authentication Context Class Reference)</span></Col>
                 <Col md={8} style={{ color: '#e6db74' }}>ユーザーの認証プロセスの文脈やセキュリティの強度を示すパラメータ
-                  例：urn:authentication:multifactorは多要素認証、「urn:authentication:biometric」は生体認証</Col>
+                  例：[urn:authentication:multifactor]は多要素認証、[urn:authentication:biometric]は生体認証</Col>
               </Row>
               <Row className="">
                 <Col md={4} className="fw-bold" style={{ color: '#f92672' }}>amr<span style={{ fontSize: '0.5em' }}>(Authentication Methods References)</span></Col>
