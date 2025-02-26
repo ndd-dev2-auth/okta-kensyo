@@ -88,6 +88,16 @@ export const UseApiComponent = () => {
                 ];
 
                 break;
+
+            case "deleteUser":
+                updatedConfig.method = "DELETE";
+                updatedConfig.endpoint = "users/[処理対象ユーザーID]";
+                updatedConfig.headers = [
+                    { key: "Content-Type", value: "application/json" },
+                ];
+                updatedConfig.body = [];
+                break;
+
             // 他のAPIタイプに応じて設定を追加
             default:
                 break;
@@ -190,7 +200,12 @@ export const UseApiComponent = () => {
             };
             console.log(config)
             const res = await axios(config);
-            setResponse(res.data);
+            // DELETE メソッドでレスポンスボディが空の場合にメッセージを設定
+            if (method === "DELETE" && res.status === 204) {
+                setResponse({ message: "ユーザーが正常に削除されました。" });
+            } else {
+                setResponse(res.data);
+            }
         } catch (err) {
             setError(err.response ? err.response.data : err.message);
         }
@@ -244,6 +259,7 @@ export const UseApiComponent = () => {
                                             >
                                                 <option value="GET">GET</option>
                                                 <option value="POST">POST</option>
+                                                <option value="PUT">PUT</option>
                                                 <option value="PATCH">PATCH</option>
                                                 <option value="DELETE">DELETE</option>
                                             </Input>
@@ -351,25 +367,14 @@ export const UseApiComponent = () => {
                 )}
             </Card>
 
-      <br />
-      参考ページ
-      <br />
-      <a href="https://dev.classmethod.jp/articles/auth0-access-token-id-token-difference/">
-        <FontAwesomeIcon icon="link" className="mr-2" />
-        APIに関する参考ページ
-      </a>
-      <br />
-
-      <a href="https://tech.yyh-gl.dev/blog/id_token_and_access_token/">
-        <FontAwesomeIcon icon="link" className="mr-2" />
-        APIに関する参考ページ
-      </a>
-      <br />
-      <a href="https://developer.okta.com/docs/guides/build-self-signed-jwt/java/main/">
-        <FontAwesomeIcon icon="link" className="mr-2" />
-        APIに関する参考ページ
-      </a>
-
+            <br />
+            参考ページ
+            <br />
+            <a href="https://auth0.com/docs/api/management/v2/users/get-users" target="_blank" rel="noopener noreferrer">
+                <FontAwesomeIcon icon="link" className="mr-2" />
+                ManagementAPIのエンドポイント集(公式ドキュメント)
+            </a>
+            <br />
         </Container>
     );
 };

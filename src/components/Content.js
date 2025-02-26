@@ -14,7 +14,7 @@ class Content extends Component {
           {contentData.map((col, i) => (
             <Col key={i} md={5} className="mb-4">
               <h6 className="mb-3">
-                <a href={col.link}>
+                <a href={col.link} target="_blank" rel="noopener noreferrer">
                   <FontAwesomeIcon icon="link" className="mr-2" />
                   {col.title}
                 </a>

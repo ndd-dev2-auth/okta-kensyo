@@ -1,27 +1,21 @@
 const contentData = [
   {
-    title: "ノウハウへのリンクとかを貼る。",
-    link: "https://auth0.com/docs/connections",
+    title: "Okta案件ノウハウ",
+    link: "https://ctcg.sharepoint.com/:p:/t/-256/EfCduMhBI2tFoKslSwzxFmQBBZkanUz0fciUBZxGLq1gbw?e=jg0lcL",
     description:
-      "○○の時のノウハウ"
+      "Oktaを使った案件での注意点、躓いたポイント等が確認できます。"
   },
   {
-    title: "ノウハウへのリンクとかを貼る。",
-    link: "https://auth0.com/docs/connections",
+    title: "OktaCIC設定変更操作手順書",
+    link: "https://ctcg.sharepoint.com/:p:/t/-256/EWxICk1e7rVEukefjIM-YtsB7i1CVYRMnvpk-7o0VYtVVQ?e=jEONbV",
     description:
-      "○○の時のノウハウ"
+      "OktaCIC管理画面側での設定変更内容、手順が確認できます。"
   },
   {
-    title: "ノウハウへのリンクとかを貼る。",
-    link: "https://auth0.com/docs/connections",
+    title: "Oktaパートナーアカウント作成方法",
+    link: "https://ctcg.sharepoint.com/:p:/t/-256/EZj0i8nDc5tCtbqW08yYGbkBUj7uJKGSEEVqFbthDrLUTw?e=KgA6bi",
     description:
-      "○○の時のノウハウ"
-  },
-  {
-    title: "ノウハウへのリンクとかを貼る。",
-    link: "https://auth0.com/docs/connections",
-    description:
-      "○○の時のノウハウ"
+      "Oktaデモ環境を作成するためのアカウント作成方法が確認できます。"
   }
 ];
 

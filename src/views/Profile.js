@@ -423,18 +423,26 @@ export const ProfileComponent = () => {
       <br />
       参考ページ
       <br />
-      <a href="https://dev.classmethod.jp/articles/auth0-access-token-id-token-difference/">
+      <a href="https://solution.kamome-e.com/blog/archive/blog-auth-20221108#:~:text=OAuth%E3%81%A8OpenID%20Connect%E3%81%AE%E5%A4%A7%E3%81%8D%E3%81%AA%E9%81%95%E3%81%84%E3%81%A8%E3%81%97%E3%81%A6%E3%80%81%E8%AA%8D%E8%A8%BC%E3%82%92%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%88%E3%82%B3%E3%83%AB%E3%81%8B%E8%AA%8D%E5%8F%AF%E3%82%92%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%88%E3%82%B3%E3%83%AB%E3%81%8B%E3%81%A8%E3%81%84%E3%81%86%E7%82%B9%E3%81%8C%E3%81%82%E3%82%8A%E3%81%BE%E3%81%99%E3%80%82%20OAuth%E3%81%AF%E8%AA%8D%E5%8F%AF%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%97%E3%83%AD%E3%83%88%E3%82%B3%E3%83%AB%E3%81%A7%E3%81%99%E3%80%82,%E3%81%9D%E3%81%AE%E3%81%9F%E3%82%81%E3%80%81%E8%AA%8D%E5%8F%AF%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AB%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%83%88%E3%83%BC%E3%82%AF%E3%83%B3%E3%82%92%E7%99%BA%E8%A1%8C%E3%81%97%E3%81%BE%E3%81%99%E3%80%82%20%E3%81%93%E3%82%8C%E3%81%AB%E3%82%88%E3%82%8A%E3%80%81%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E6%A8%A9%E9%99%90%E3%82%92%E5%A7%94%E8%AD%B2%E3%81%97%E3%80%81API%E3%82%92%E4%BF%9D%E8%AD%B7%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8%E3%81%8C%E3%81%A7%E3%81%8D%E3%81%BE%E3%81%99%E3%80%82%20%E3%81%9D%E3%82%8C%E3%81%AB%E5%AF%BE%E3%81%97%E3%81%A6%E3%80%81OpenID%20Connect%E3%81%AF%E8%AA%8D%E8%A8%BC%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%97%E3%83%AD%E3%83%88%E3%82%B3%E3%83%AB%E3%81%A7%E3%81%99%E3%80%82"
+       target="_blank" rel="noopener noreferrer">
+        <FontAwesomeIcon icon="link" className="mr-2" />
+        OAuth2.0とOIDC
+      </a>
+      <br />
+      <a href="https://tech.yyh-gl.dev/blog/id_token_and_access_token/"
+       target="_blank" rel="noopener noreferrer">
         <FontAwesomeIcon icon="link" className="mr-2" />
         IDトークンとアクセストークンの違い1
       </a>
       <br />
-
-      <a href="https://tech.yyh-gl.dev/blog/id_token_and_access_token/">
+      <a href="https://dev.classmethod.jp/articles/auth0-access-token-id-token-difference/"
+       target="_blank" rel="noopener noreferrer">
         <FontAwesomeIcon icon="link" className="mr-2" />
         IDトークンとアクセストークンの違い2
       </a>
       <br />
-      <a href="https://developer.okta.com/docs/guides/build-self-signed-jwt/java/main/">
+      <a href="https://developer.okta.com/docs/guides/build-self-signed-jwt/java/main/"
+       target="_blank" rel="noopener noreferrer">
         <FontAwesomeIcon icon="link" className="mr-2" />
         JWTの内容解説-Okta公式ドキュメント
       </a>
